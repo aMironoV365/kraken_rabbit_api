@@ -20,7 +20,7 @@ services:
       - mynetwork
 
   krakend:
-    image: devopsfaith/krakend
+    image: devopsfaith/krakend:latest
     ports:
       - "8080:8080"
     volumes:
