@@ -1,0 +1,38 @@
+{
+    "version": 3,
+    "name": "FastAPI Gateway",
+    "port": 8080,
+    "timeout": "3000ms",
+    "endpoints": [
+      {
+        "endpoint": "/products",
+        "method": "POST",
+        "extra_config": {
+          "async/amqp-producer": {
+            "url": "amqp://guest:guest@rabbitmq:5672/",
+            "exchange": "krakend_exchange",
+            "exchange_type": "direct",
+            "routing_key": "product_created",
+            "message": {
+              "type": "json",
+              "value": {
+                "message": "Product created",
+                "product": "@body"
+              }
+            },
+            "durable": true
+          }
+        },
+        "backend": [
+          {
+            "url_pattern": "/products",
+            "method": "POST",
+            "host": [
+              "http://fastapi:8000"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  
